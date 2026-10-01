@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<title>Inserisci Nuovo Servizio</title>
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/css/indexOperatore.css">
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+</head>
+<body>
+
+	<!-- Header -->
+	<nav th:replace="fragments/base.html :: nav"></nav>
+
+	<div class="container main-content mt-2 mb-3">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="highlight">
+					<h2 class="text-center text-primary display-4 bold"
+						th:text=" 'Benvenuto'+' '+${user.nome} + ' ' + ${user.cognome}">Benvenuto
+						valerio</h2>
+					<p class="text-center lead">Gestisci le prenotazioni con te e i
+						servizi da questa pagina.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- tabella prenotazioni -->
+	<div class="container mt-5">
+		<h2 class="mb-4">Le Prenotazioni con te </h2>
+		<table class="table table-bordered table-custom-header">
+			<thead class="bg-primary text-white">
+				<tr>
+					<th scope="col">Giorno</th>
+					<th scope="col">Ora</th>
+					<th scope="col">Servizio</th>
+					<th scope="col">Cliente</th>
+					<th scope="col">Azione</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="pren: ${prenotazioni}">
+					<td th:text="${pren.orario.toLocalDate()}"></td>
+					<td th:text="${pren.orario.toLocalTime()}"></td>
+					<td th:text="${pren.servizio.nome}"></td>
+					<td th:text="${pren.cliente.nome} + ' ' + ${pren.cliente.cognome}"></td>
+					<td>
+						<a th:href="@{'/disdiciPrenotazioneOperatore/' + ${pren.id}}">
+						<button type="button" class="btn btn-danger btn-sm">Disdici</button>
+						</a>					
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+<!-- form inserisci nuova servizio -->
+	<div class="container mt-5">
+		<h2 class="mb-4 ">Inserisci Nuovo Servizio</h2>
+
+		<form th:action="@{/newServizio}" method="post">
+
+			<div class="mb-4">
+				<label for="serviceName">Nome del Servizio</label> <input
+					type="text" class="form-control" id="serviceName"
+					placeholder="Nome del servizio" th:field="${servizio.nome}"
+					required>	
+					<span th:if="${#fields.hasErrors('servizio.nome')}"
+					th:errors="${servizio.nome}" th:style="'color:red'"></span>
+			</div>
+			<div class="mb-4">
+				<label for="serviceDescription">Descrizione</label>
+				<textarea class="form-control" id="serviceDescription" rows="3"
+					placeholder="Descrizione del servizio"
+					th:field="${servizio.descrizione}" name="descrizione" required></textarea>
+			</div>
+			<div class="mb-4">
+				<label for="servicePrice">Prezzo</label> <input type="number"
+					class="form-control" id="servicePrice"
+					placeholder="Prezzo del servizio" step="0.01"
+					th:field="${servizio.prezzo}" required>
+			</div>
+			<button type="submit" class="btn btn-primary btn-block">Aggiungi Servizio</button>
+		</form>
+	</div>
+
+<!-- cambia prezzo servizi esistenti -->
+<div class="container  mt-5 mb-5">
+    <section id="servizi">
+        <h2>Servizi</h2>
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3" th:each="servizio : ${servizi}">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0" th:text="${servizio.nome}">Nome Servizio</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text" th:text="${servizio.descrizione}">Descrizione del servizio.</p>
+                        <p class="card-text">
+                            <strong th:text="'€' + ${servizio.prezzo}"> Prezzo</strong>
+                        </p>
+                        <div>
+                        <hr class="mt-4 bg-primary">
+                        </div>
+                        
+                         <h5>Modifica prezzo</h5>
+                         <form th:action="@{/admin/modificaPrezzo }"method="POST">
+                            <div class="form-group">
+                                <input type="hidden" name="idServizio" th:value="${servizio.id}">
+                            </div>
+                            <div class="form-group">
+                                <label for="servicePrice">Nuovo Prezzo</label>
+                                <input type="number" class="form-control" id="servicePrice" name="nuovoPrezzo" step="0.01" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Salva</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+    <!-- Footer -->
+    <footer th:replace="fragments/base.html :: footer"></footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

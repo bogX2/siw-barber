@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrazione Completata</title>
+  <link rel="stylesheet" href="/css/reg.css">
+  <link rel="stylesheet" href="/css/index.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+	<!-- Header -->
+	<nav th:replace="fragments/base.html :: nav"></nav>
+
+  <div class="container mt-5 vh-100">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card1">
+          <div class="card-header">
+            <h2 class="text-center">Registrazione Completata</h2>
+          </div>
+          <div class="card-body">
+            <p class="text-center">La tua registrazione è avvenuta con successo!</p>
+            <p class="text-center">Ecco i dati che hai inserito:</p>
+            <ul class="list-group">
+              <li class="list-group-item">User: <strong id="username" th:text="${user.nome} +' '+${user.cognome}"></strong></li>
+              <li class="list-group-item">Email: <strong id="email" th:text="${user.email}"></strong></li>
+            </ul>
+            <div class="text-center mt-4">
+              <a href="/" class="btn btn-primary">Torna alla Home</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<!-- Footer -->
+	<footer th:replace="fragments/base.html :: footer"></footer>
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
